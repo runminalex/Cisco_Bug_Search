@@ -31,10 +31,10 @@ disclaimer = '##################################################################
              '#                                                                            #\n' \
              '##############################################################################\n'
 
-def excel_gen(version, platform='IOS'):
+def excel_gen(version, token, platform='IOS'):
     # 1 for IOS && 2 for IOSXE
     print('Generating report for ' + version)
-    token = get_token()
+    # token = get_token()
     if platform == 'IOS':
         http_request = "https://api.cisco.com/security/advisories/ios?version=" + version
     elif platform == 'IOSXE':
@@ -82,36 +82,36 @@ def version_list_get(platform='IOS'):
 
     return version_list
 
-if __name__ == '__main__':
+def main():
     print("System is initialising")
 
-    # token = get_token()
+    token = get_token()
     print(disclaimer)
     sleep(3.5)
 
-    mode = input('Enter the number to choose the mode,: \n \
-1: Input one Cisco software version\n \
-2: Input multiple Cisco software versions\n \
-3: Exit\n: \
-')
+    mode = input('Enter the number to choose the mode,: \n'
+                 '1: Input one Cisco software version\n'
+                 '2: Input multiple Cisco software versions\n'
+                 '3: Exit\n'
+                 ':')
     if mode == '2':
         platform = platform_get()
         version_list = version_list_get()
         if platform == 'IOS':
             for ios_version in version_list:
                 # print('Generating report for ' + ios_version)
-                excel_gen(ios_version, platform=platform)
+                excel_gen(ios_version, token, platform=platform)
         elif platform == 'IOSXE':
             for iosxe_version in version_list:
                 # print('Generating report for ' + iosxe_version)
-                excel_gen(iosxe_version, platform=platform)
+                excel_gen(iosxe_version, token, platform=platform)
         else:
             print('No valid version has been found')
 
     elif mode == '1':
          platform = platform_get()
          version = input('Enter the software version of your Cisco device, e.g.,12.2(50)SE1 :')
-         excel_gen(version, platform)
+         excel_gen(version, token, platform=platform)
 
 
     elif mode == '3':
@@ -122,3 +122,6 @@ if __name__ == '__main__':
 
     print('Program is exiting')
     sleep(3)
+
+if __name__ == '__main__':
+    main()
