@@ -1,13 +1,15 @@
 import requests
 import json
+from oauth_cred import get_cred
 
 def get_token():
+    cred=get_cred()
     url = 'https://cloudsso.cisco.com/as/token.oauth2'
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     payload = {
         'grant_type': 'client_credentials',
-        'client_id': 'bcqs6ejwhj9tufavrknxnm4u',
-        'client_secret': 'Zs3nyzjg7MP2kQgszcWcycBk'
+        'client_id': cred['client_id'],
+        'client_secret': cred['client_secret']
     }
     r = requests.post(url, headers=headers, data=payload)
     result = json.loads(r.content)
